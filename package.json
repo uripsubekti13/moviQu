@@ -1,0 +1,57 @@
+{
+  "name": "moviqu",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "android": "react-native run-android",
+    "build": "cd android && ./gradlew assembleRelease && cd ..",
+    "clean": "cd android && ./gradlew clean && cd ..",
+    "test": "jest"
+  },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts"
+    ]
+  },
+  "dependencies": {
+    "@types/react-native-vector-icons": "^6.4.0",
+    "@types/react-navigation": "^3.0.6",
+    "@types/react-navigation-material-bottom-tabs": "^0.3.1",
+    "lodash": "^4.17.11",
+    "mobx": "^5.9.4",
+    "mobx-react": "^5.4.3",
+    "native-base": "^2.12.1",
+    "react": "16.8.3",
+    "react-native": "0.59.4",
+    "react-native-base64": "^0.0.2",
+    "react-native-gesture-handler": "^1.1.0",
+    "react-native-keep-awake": "^4.0.0",
+    "react-native-orientation-locker": "^1.1.5",
+    "react-native-paper": "^2.15.2",
+    "react-native-vector-icons": "^6.4.2",
+    "react-native-video": "^4.4.1",
+    "react-native-video-player": "file:local_modules/react-native-video-player",
+    "react-navigation": "^3.8.1",
+    "react-navigation-material-bottom-tabs": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/runtime": "^7.4.3",
+    "@types/jest": "^24.0.11",
+    "@types/lodash": "^4.14.124",
+    "@types/react": "^16.8.13",
+    "@types/react-native": "^0.57.45",
+    "@types/react-native-orientation": "^5.0.1",
+    "@types/react-native-video": "^3.1.2",
+    "@types/react-test-renderer": "^16.8.1",
+    "babel-jest": "^24.7.1",
+    "jest": "^24.7.1",
+    "metro-react-native-babel-preset": "^0.53.1",
+    "react-test-renderer": "16.8.3",
+    "typescript": "^3.4.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
