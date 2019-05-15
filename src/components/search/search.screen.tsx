@@ -36,17 +36,17 @@ export default class Search extends Component<any, State> {
         if (result && result.length > 0) this.setState({ result })
     }
 
-    renderItem = ({item, index}: {item: Movie, index: number}) => {
+    renderItem = ({ item, index }: { item: Movie, index: number }) => {
         return (
-            <ListItem key={index} onPress={() => navigationService.navigate('Detail', {id: item.id})}>
-                <Col size={1}>
-                    <Image source={{uri: item.poster}} style={{width: 69, height: 69}} />
-                </Col>
-                <Col size={3}>
-                    <Text style={{fontWeight: '500', color: '#000', fontSize: 15}}>{item.title}</Text>
-                    <Text style={{fontSize: 11}}>{`[${item.quality}]`} - {item.country}</Text>
-                    <Text style={{fontSize: 11}}>{`Rating: ${item.rating}/10`}</Text>
-                </Col>
+            <ListItem key={index} onPress={() => navigationService.navigate('Detail', { id: item.id })}>
+                <View>
+                    <Image source={{ uri: item.poster }} style={{ width: 69, height: 69 }} />
+                </View>
+                <View style={{paddingHorizontal: 10}}>
+                    <Text style={{ fontWeight: '500', color: '#000', fontSize: 15, width: '70%' }}>{item.title}</Text>
+                    <Text style={{ fontSize: 11 }}>{`[${item.quality}]`} - {item.country}</Text>
+                    <Text style={{ fontSize: 11 }}>{`Rating: ${item.rating}/10`}</Text>
+                </View>
             </ListItem>
         )
     }

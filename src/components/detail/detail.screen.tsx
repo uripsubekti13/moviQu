@@ -67,7 +67,7 @@ export default class Detail extends Component<any, State> {
 
     render() {
         const deviceWidth = Dimensions.get('window').width;
-        const { selectedServer, files } = this.state;
+        const { selectedServer, files, detail } = this.state;
         const file = _.get(files, `${selectedServer}[0]`)
         const source = _.get(file, 'cookie') ? { uri: _.get(file, 'file'), headers: { Cookie: _.get(file, 'cookie') } } : { uri: _.get(file, 'file') };
         
@@ -86,7 +86,7 @@ export default class Detail extends Component<any, State> {
         return (
             <ScrollView style={styles.container}>
                 {this.state.selectedServer &&
-                    <TouchableOpacity onPress={() => navigationService.navigate('Player', { source, subtitle, thumbnail, id })}>
+                    <TouchableOpacity onPress={() => navigationService.navigate('Player', { source, subtitle, thumbnail, id, detail })}>
                         {thumbnail && <ImageBackground source={cover} style={{ width: deviceWidth, height: deviceWidth * (9 / 16), justifyContent: 'center', alignItems: 'center' }} >
                             <Image source={assets.images.play} style={{ width: 50, height: 50 }} />
                         </ImageBackground>}
@@ -95,7 +95,7 @@ export default class Detail extends Component<any, State> {
                 }
                 <View>
                     <Text style={{ color: '#fff', margin: 10, fontSize: 17, fontWeight: '500' }}>
-                        {(this.state.files && Object.keys(this.state.files)) ? 'Select Server:' : 'No Sources'}
+                        {(this.state.files && Object.keys(this.state.files)).length > 0 ? 'Select Server:' : 'No Sources'}
                     </Text>
                 </View>
                 <View style={{ flexDirection: 'row', paddingLeft: 10 }}>

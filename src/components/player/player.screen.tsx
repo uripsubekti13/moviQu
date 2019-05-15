@@ -7,8 +7,10 @@ import VideoPlayer from 'react-native-video-player';
 import { TextTrackType } from 'react-native-video';
 import { storageService } from '../../services/storage.service';
 import * as _ from "lodash";
+import { recentStore } from '../recent/recent.store';
 
 export default class Player extends Component<any, any> {
+
     private videoPlayer: any;
     private onStart: any = undefined;
 
@@ -23,7 +25,8 @@ export default class Player extends Component<any, any> {
             lastTimeLoaded: false,
             duration: 100,
             paused: false,
-            opacity: 0
+            opacity: 0,
+            detail: null
         }
     }
 
@@ -36,10 +39,10 @@ export default class Player extends Component<any, any> {
         const source = this.props.navigation.getParam('source');
         const subtitle = this.props.navigation.getParam('subtitle');
         const thumbnail = this.props.navigation.getParam('thumbnail');
-        this.setState({ source, subtitle, thumbnail });
+        const detail = this.props.navigation.getParam('detail');
+        this.setState({ source, subtitle, thumbnail, detail });
         Orientation.lockToLandscape();
         KeepAwake.activate();
-
     }
 
     onProgress = (event: any) => {
@@ -56,20 +59,32 @@ export default class Player extends Component<any, any> {
         this.setState({ opacity: isBuffering ? 1 : 0 });
     }
 
-    componentWillUnmount() {
+    async componentWillUnmount() {
         const id = this.props.navigation.getParam('id');
         Orientation.unlockAllOrientations();
         KeepAwake.deactivate();
         const lastTime: number = this.state.currentTime
-        storageService.setLastTime(id, lastTime)
+        storageService.setLastTime(id, lastTime);
+        recentStore.recents = await storageService.getList();
         this.setState({ source: undefined, subtitle: undefined, header: undefined, thumbnail: undefined });
+    }
+
+    secondToMinutes(value: number) {
+        const hours = Math.floor(value / 3600);
+        const minutes = Math.floor((value - (hours * 3600)) / 60);
+        const seconds = Math.floor(value - (hours * 3600) - (minutes * 60));
+        const hh = (hours < 10) ? `0${hours.toString()}` : hours.toString();
+        const mm = (minutes < 10) ? `0${minutes.toString()}` : minutes.toString();
+        const ss = (seconds < 10) ? `0${seconds.toString()}` : seconds.toString();
+        return hh + ':' + mm + ':' + ss;
     }
 
     onLoad = (e: any) => {
         const { lastTimeLoaded, lastTime } = this.state;
+        storageService.setList(this.state.detail);
         if (!lastTimeLoaded && lastTime !== 0 && lastTime !== e.duration) {
             this.setState({ paused: true })
-            Alert.alert('moviQu', `Lanjutkan ke ${lastTime}`, [
+            Alert.alert('moviQu', `Lanjutkan ke ${this.secondToMinutes(lastTime)}`, [
                 { text: 'Tidak', onPress: () => this.setState({ paused: false }) },
                 { text: 'Lanjutkan', onPress: () => this.loadLastTime(lastTime) }
             ])

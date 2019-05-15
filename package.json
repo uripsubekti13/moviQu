@@ -34,10 +34,12 @@
     "react-native-video": "^4.4.1",
     "react-native-video-player": "file:local_modules/react-native-video-player",
     "react-navigation": "^3.8.1",
-    "react-navigation-material-bottom-tabs": "^1.0.0"
+    "react-navigation-material-bottom-tabs": "^1.0.0",
+    "rxjs": "^5.5.7"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/runtime": "^7.4.3",
     "@types/jest": "^24.0.11",
     "@types/lodash": "^4.14.124",
