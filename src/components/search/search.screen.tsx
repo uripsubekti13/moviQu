@@ -5,8 +5,8 @@ import navigationService from '../../services/navigation.service';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 import { Input, Item, Container, Content, ListItem, Col } from "native-base";
 import { searchRestService } from '../../services/rest';
-import { Movie } from '../../services/rest/search_rest.service.js';
-import { Ads } from '../../shared/component/ads.js';
+import { Movie } from '../../services/rest/search_rest.service';
+import { Ads } from '../../shared/component/ads';
 
 const Icon = createIconSetFromIcoMoon(IconMoonConfig)
 
