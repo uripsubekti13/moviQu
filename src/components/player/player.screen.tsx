@@ -11,7 +11,7 @@ import { recentStore } from '../recent/recent.store';
 
 export default class Player extends Component<any, any> {
 
-    private videoPlayer: any;
+    private videoPlayer: any = undefined;
     private onStart: any = undefined;
 
     constructor(props: any) {
@@ -26,7 +26,8 @@ export default class Player extends Component<any, any> {
             duration: 100,
             paused: false,
             opacity: 0,
-            detail: null
+            detail: null,
+            first: true
         }
     }
 
@@ -67,6 +68,7 @@ export default class Player extends Component<any, any> {
         storageService.setLastTime(id, lastTime);
         recentStore.recents = await storageService.getList();
         this.setState({ source: undefined, subtitle: undefined, header: undefined, thumbnail: undefined });
+        this.videoPlayer = undefined;
     }
 
     secondToMinutes(value: number) {
@@ -82,14 +84,14 @@ export default class Player extends Component<any, any> {
     onLoad = (e: any) => {
         const { lastTimeLoaded, lastTime } = this.state;
         storageService.setList(this.state.detail);
-        if (!lastTimeLoaded && lastTime !== 0 && lastTime !== e.duration) {
+        if (!lastTimeLoaded && lastTime !== 0 && lastTime !== e.duration && !this.state.first) {
             this.setState({ paused: true })
             Alert.alert('moviQu', `Lanjutkan ke ${this.secondToMinutes(lastTime)}`, [
                 { text: 'Tidak', onPress: () => this.setState({ paused: false }) },
                 { text: 'Lanjutkan', onPress: () => this.loadLastTime(lastTime) }
             ])
         }
-        this.setState({ opacity: 0 });
+        this.setState({ opacity: 0, first: false });
     }
 
     loadLastTime = (lastTime: number) => {
@@ -105,7 +107,7 @@ export default class Player extends Component<any, any> {
         return (
             <View style={{ backgroundColor: '#000' }}>
                 <VideoPlayer
-                    autoplay={true}
+                    // autoplay={true}
                     ref={(v: any) => this.videoPlayer = v}
                     endWithThumbnail
                     onError={this.onError}
@@ -129,12 +131,13 @@ export default class Player extends Component<any, any> {
                     paused={this.state.paused}
                     style={{ height: '100%', paddingHorizontal: 10 }}
                 />
-                <ActivityIndicator
-                    animating
-                    size="large"
-                    color={'#fff'}
-                    style={[styles.activityIndicator, { opacity: this.state.opacity }]}
-                />
+                {this.state.opacity === 1 &&
+                    <ActivityIndicator
+                        animating
+                        size="large"
+                        color={'#fff'}
+                        style={[styles.activityIndicator, { opacity: this.state.opacity }]}
+                    />}
             </View>
         )
     }

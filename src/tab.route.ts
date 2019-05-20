@@ -9,7 +9,7 @@ export default createMaterialBottomTabNavigator(
     Discover,
     Recent,
     Watchlist,
-    Profile
+    // Profile
   },
   {
     shifting: false,

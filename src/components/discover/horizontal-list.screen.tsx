@@ -54,7 +54,7 @@ export default class HorizontalList extends Component<Props> {
                             <Text style={{ fontSize: 16, fontFamily: 'OpenSans-Bold' }}>{this.props.title}</Text>
                         </View>
                         <View style={{ flex: 0.3, alignItems: 'flex-end' }}>
-                            <Text style={{ fontSize: 16, fontFamily: 'OpenSans-Semibold', color: "rgb(255,0,219)" }}>See All</Text>
+                            {/* <Text style={{ fontSize: 16, fontFamily: 'OpenSans-Semibold', color: "rgb(255,0,219)" }}>See All</Text> */}
                         </View>
                     </View>
                 </View>
