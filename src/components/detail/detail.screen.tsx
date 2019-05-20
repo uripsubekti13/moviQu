@@ -7,6 +7,9 @@ import { TextTrackType } from 'react-native-video';
 import navigationService from '../../services/navigation.service';
 import assets from '../../../assets/index';
 import * as _ from 'lodash';
+import { Icon, Toast } from 'native-base';
+import { watchlistService } from '../../services/watchlist.service';
+import { watchlistStore } from '../watchlist/watchlist.store';
 
 interface State {
     id: string | null;
@@ -14,6 +17,7 @@ interface State {
     loading: boolean;
     files: Files;
     selectedServer?: string;
+    isWatchlist?: boolean;
 }
 export default class Detail extends Component<any, State> {
     private videoPlayer: any;
@@ -26,26 +30,50 @@ export default class Detail extends Component<any, State> {
             detail: null,
             loading: false,
             files: {},
-            selectedServer: undefined
+            selectedServer: undefined,
+            isWatchlist: false,
         }
     }
 
     async componentWillMount() {
         const id = this.props.navigation.getParam('id');
         try {
+            const isWatchlist = await watchlistService.isExist(id);
+            console.log({ isWatchlist })
             this.setState({ loading: true })
             const detail = await detailRestService.getDetail(id);
             if (detail) {
                 if (detail) this.setState({ detail });
                 if (detail && detail.files && Object.keys(detail.files).length > 0) {
                     const selectedServer = Object.keys(detail.files)[0]
-                    this.setState({ files: detail.files, selectedServer })
+                    this.setState({ files: detail.files, selectedServer, isWatchlist })
                 };
             }
 
         } finally {
             this.setState({ loading: false })
         }
+    }
+
+    async componentWillUnmount() {
+        const list: any[] = await watchlistService.getList();
+        watchlistStore.watchlist = list;
+    }
+
+    onPressFavorite = async () => {
+        const id = this.props.navigation.getParam('id');
+
+        if (this.state.isWatchlist) {
+            await watchlistService.remove(this.state.detail);
+        } else {
+            await watchlistService.add(this.state.detail);
+        }
+        const isWatchlist = await watchlistService.isExist(id);
+        this.setState({ isWatchlist }, () => {
+            Toast.show({
+                text: isWatchlist ? 'Added to Watchlist' : 'Removed from Whatlist',
+            })
+        });
     }
 
 
@@ -70,7 +98,7 @@ export default class Detail extends Component<any, State> {
         const { selectedServer, files, detail } = this.state;
         const file = _.get(files, `${selectedServer}[0]`)
         const source = _.get(file, 'cookie') ? { uri: _.get(file, 'file'), headers: { Cookie: _.get(file, 'cookie') } } : { uri: _.get(file, 'file') };
-        
+
         const subtitle = _.get(file, 'subtitle');
         const thumbnail = this.state.detail ? { uri: this.state.detail.poster } : undefined;
         const cover = this.state.detail ? { uri: this.state.detail.poster } : { uri: `https://via.placeholder.com/1600x900` };
@@ -102,8 +130,17 @@ export default class Detail extends Component<any, State> {
                     <FlatList horizontal data={Object.keys(this.state.files)} renderItem={this.renderServerItem} />
                 </View>
                 <View style={styles.descContainer}>
-                    <Text style={[styles.h1, styles.bold]}>{this.state.detail ? this.state.detail.title : ''}</Text>
-                    <Text style={[styles.h2, styles.orange]}>{this.state.detail ? this.state.detail.category : ''}</Text>
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <View style={{ flex: 9 }}>
+                            <Text style={[styles.h1, styles.bold]}>{this.state.detail ? this.state.detail.title : ''}</Text>
+                            <Text style={[styles.h2, styles.orange]}>{this.state.detail ? this.state.detail.category : ''}</Text>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <TouchableOpacity onPress={this.onPressFavorite}>
+                                <Icon name={this.state.isWatchlist ? 'favorite' : 'favorite-border'} type={'MaterialIcons'} style={{ color: 'white', fontSize: 32 }} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                     <View style={styles.separator} />
                     <Text style={[styles.h2]}>{this.state.detail ? this.state.detail.description : ''}</Text>
                 </View>

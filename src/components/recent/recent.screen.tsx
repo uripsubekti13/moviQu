@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, ScrollView, FlatList, Image } from 'react-native'
+import { Text, View, ScrollView, FlatList, Image, Dimensions } from 'react-native'
 import { TabBarIcon } from '../../shared/component';
 import { storageService } from '../../services/storage.service';
 import { ListItem } from 'native-base';
@@ -55,11 +55,13 @@ export default class Recent extends Component<any, any> {
                             > Recent </Text>
                         </View>
                     </View>
-                    <FlatList
+                    {recentStore.recents.length > 0 ? <FlatList
                         data={recentStore.recents}
                         extraData={recentStore.recents}
                         renderItem={this.renderItem}
-                    />
+                    /> : <View style={{ paddingTop: Dimensions.get('window').height / 2 - 70, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text>Empty</Text>
+                        </View>}
                 </View>
                 <View style={{ height: 10 }} />
             </ScrollView>
