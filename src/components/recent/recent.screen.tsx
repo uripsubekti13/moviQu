@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { Text, View, ScrollView, FlatList, Image, Dimensions } from 'react-native'
 import { TabBarIcon } from '../../shared/component';
 import { storageService } from '../../services/storage.service';
-import { ListItem } from 'native-base';
+import { ListItem, Container } from 'native-base';
 import { observer } from "mobx-react";
 import { recentStore } from './recent.store';
 import navigationService from '../../services/navigation.service';
+import { Ads } from '../../shared/component/ads';
 
 @observer
 export default class Recent extends Component<any, any> {
@@ -42,29 +43,32 @@ export default class Recent extends Component<any, any> {
     render() {
         console.log(recentStore.recents)
         return (
-            <ScrollView>
-                <View style={{ paddingHorizontal: 5 }}>
-                    <View style={{ marginTop: 15, flexDirection: 'row', flex: 1 }}>
-                        <View style={{ flex: 3 }}>
-                            <Text
-                                style={{
-                                    fontSize: 28,
-                                    color: 'rgb(56,57,82)',
-                                    fontFamily: 'OpenSans-Bold'
-                                }}
-                            > Recent </Text>
+            <Container>
+                <ScrollView>
+                    <View style={{ paddingHorizontal: 5 }}>
+                        <View style={{ marginTop: 15, flexDirection: 'row', flex: 1 }}>
+                            <View style={{ flex: 3 }}>
+                                <Text
+                                    style={{
+                                        fontSize: 28,
+                                        color: 'rgb(56,57,82)',
+                                        fontFamily: 'OpenSans-Bold'
+                                    }}
+                                > Recent </Text>
+                            </View>
                         </View>
+                        {recentStore.recents.length > 0 ? <FlatList
+                            data={recentStore.recents}
+                            extraData={recentStore.recents}
+                            renderItem={this.renderItem}
+                        /> : <View style={{ paddingTop: Dimensions.get('window').height / 2 - 70, justifyContent: 'center', alignItems: 'center' }}>
+                                <Text>Empty</Text>
+                            </View>}
                     </View>
-                    {recentStore.recents.length > 0 ? <FlatList
-                        data={recentStore.recents}
-                        extraData={recentStore.recents}
-                        renderItem={this.renderItem}
-                    /> : <View style={{ paddingTop: Dimensions.get('window').height / 2 - 70, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text>Empty</Text>
-                        </View>}
-                </View>
-                <View style={{ height: 10 }} />
-            </ScrollView>
+                    <View style={{ height: 10 }} />
+                </ScrollView>
+                <Ads />
+            </Container>
         )
     }
 }

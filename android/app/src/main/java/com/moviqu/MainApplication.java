@@ -3,6 +3,7 @@ package com.moviqu;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.sbugert.rnadmob.RNAdMobPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import org.wonday.orientation.OrientationPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNAdMobPackage(),
             new LinearGradientPackage(),
             new OrientationPackage(),
             new KCKeepAwakePackage(),

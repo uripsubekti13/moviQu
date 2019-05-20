@@ -24,6 +24,7 @@
     "native-base": "^2.12.1",
     "react": "16.8.3",
     "react-native": "0.59.4",
+    "react-native-admob": "file:local_modules/react-native-admob",
     "react-native-base64": "^0.0.2",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-keep-awake": "^4.0.0",

@@ -7,6 +7,8 @@ import { Movie } from '../../services/rest/discover_rest.service';
 import { createIconSetFromIcoMoon } from "react-native-vector-icons";
 import * as IconMoonConfig from "../../../assets/fonts/selection.json"
 import navigationService from '../../services/navigation.service';
+import { Ads } from '../../shared/component/ads';
+import { Container } from 'native-base';
 const Icon = createIconSetFromIcoMoon(IconMoonConfig)
 
 interface State {
@@ -38,30 +40,34 @@ export default class Discover extends Component<any, State> {
     render() {
         const { featured, latest, year } = this.state
         return (
-            <ScrollView>
-                <View style={{ paddingHorizontal: 5 }}>
-                    <View style={{ marginTop: 15, flexDirection: 'row', flex: 1 }}>
-                        <View style={{ flex: 3 }}>
-                            <Text
-                                style={{
-                                    fontSize: 28,
-                                    color: 'rgb(56,57,82)',
-                                    fontFamily: 'OpenSans-Bold'
-                                }}
-                            > Discover </Text>
-                        </View>
-                        <TouchableOpacity onPress={() => navigationService.navigate('Search')}>
-                            <View style={{ justifyContent: 'center', alignContent: 'flex-end', marginHorizontal: 10 }}>
-                                <Icon style={{ backgroundColor: 'transparent', fontSize: 27, color: 'rgb(56,57,82)', marginTop: 6 }} name={'search'} />
+            <Container>
+
+                <ScrollView>
+                    <View style={{ paddingHorizontal: 5 }}>
+                        <View style={{ marginTop: 15, flexDirection: 'row', flex: 1 }}>
+                            <View style={{ flex: 3 }}>
+                                <Text
+                                    style={{
+                                        fontSize: 28,
+                                        color: 'rgb(56,57,82)',
+                                        fontFamily: 'OpenSans-Bold'
+                                    }}
+                                > Discover </Text>
                             </View>
-                        </TouchableOpacity>
+                            <TouchableOpacity onPress={() => navigationService.navigate('Search')}>
+                                <View style={{ justifyContent: 'center', alignContent: 'flex-end', marginHorizontal: 10 }}>
+                                    <Icon style={{ backgroundColor: 'transparent', fontSize: 27, color: 'rgb(56,57,82)', marginTop: 6 }} name={'search'} />
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        {featured.length > 0 && <HorizontalList data={featured} title={'Featured Movies'} />}
+                        {latest.length > 0 && <HorizontalList data={latest} title={'Latest Movies'} />}
+                        {year.length > 0 && <HorizontalList data={year} title={'Year Movies'} />}
                     </View>
-                    {featured.length > 0 && <HorizontalList data={featured} title={'Featured Movies'} />}
-                    {latest.length > 0 && <HorizontalList data={latest} title={'Latest Movies'} />}
-                    {year.length > 0 && <HorizontalList data={year} title={'Year Movies'} />}
-                </View>
-                <View style={{ height: 10 }} />
-            </ScrollView>
+                    <View style={{ height: 10 }} />
+                </ScrollView>
+                <Ads />
+            </Container>
         )
     }
 }

@@ -6,6 +6,7 @@ import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 import { Input, Item, Container, Content, ListItem, Col } from "native-base";
 import { searchRestService } from '../../services/rest';
 import { Movie } from '../../services/rest/search_rest.service.js';
+import { Ads } from '../../shared/component/ads.js';
 
 const Icon = createIconSetFromIcoMoon(IconMoonConfig)
 
@@ -42,7 +43,7 @@ export default class Search extends Component<any, State> {
                 <View>
                     <Image source={{ uri: item.poster }} style={{ width: 69, height: 69 }} />
                 </View>
-                <View style={{paddingHorizontal: 10}}>
+                <View style={{ paddingHorizontal: 10 }}>
                     <Text style={{ fontWeight: '500', color: '#000', fontSize: 15, width: '70%' }}>{item.title}</Text>
                     <Text style={{ fontSize: 11 }}>{`[${item.quality}]`} - {item.country}</Text>
                     <Text style={{ fontSize: 11 }}>{`Rating: ${item.rating}/10`}</Text>
@@ -73,6 +74,7 @@ export default class Search extends Component<any, State> {
                         renderItem={this.renderItem}
                     />
                 </Content>
+                <Ads />
             </Container>
         )
     }

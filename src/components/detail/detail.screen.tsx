@@ -7,9 +7,10 @@ import { TextTrackType } from 'react-native-video';
 import navigationService from '../../services/navigation.service';
 import assets from '../../../assets/index';
 import * as _ from 'lodash';
-import { Icon, Toast } from 'native-base';
+import { Icon, Toast, Container } from 'native-base';
 import { watchlistService } from '../../services/watchlist.service';
 import { watchlistStore } from '../watchlist/watchlist.store';
+import { Ads } from '../../shared/component/ads';
 
 interface State {
     id: string | null;
@@ -112,40 +113,42 @@ export default class Detail extends Component<any, State> {
             )
         }
         return (
-            <ScrollView style={styles.container}>
-                {this.state.selectedServer &&
-                    <TouchableOpacity onPress={() => navigationService.navigate('Player', { source, subtitle, thumbnail, id, detail })}>
-                        {thumbnail && <ImageBackground source={cover} style={{ width: deviceWidth, height: deviceWidth * (9 / 16), justifyContent: 'center', alignItems: 'center' }} >
-                            <Image source={assets.images.play} style={{ width: 50, height: 50 }} />
-                        </ImageBackground>}
-                    </TouchableOpacity>
+            <Container>
+                <ScrollView style={styles.container}>
+                    {this.state.selectedServer &&
+                        <TouchableOpacity onPress={() => navigationService.navigate('Player', { source, subtitle, thumbnail, id, detail })}>
+                            {thumbnail && <ImageBackground source={cover} style={{ width: deviceWidth, height: deviceWidth * (9 / 16), justifyContent: 'center', alignItems: 'center' }} >
+                                <Image source={assets.images.play} style={{ width: 50, height: 50 }} />
+                            </ImageBackground>}
+                        </TouchableOpacity>
 
-                }
-                <View>
-                    <Text style={{ color: '#fff', margin: 10, fontSize: 17, fontWeight: '500' }}>
-                        {(this.state.files && Object.keys(this.state.files)).length > 0 ? 'Select Server:' : 'No Sources'}
-                    </Text>
-                </View>
-                <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
-                    <FlatList horizontal data={Object.keys(this.state.files)} renderItem={this.renderServerItem} />
-                </View>
-                <View style={styles.descContainer}>
-                    <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <View style={{ flex: 9 }}>
-                            <Text style={[styles.h1, styles.bold]}>{this.state.detail ? this.state.detail.title : ''}</Text>
-                            <Text style={[styles.h2, styles.orange]}>{this.state.detail ? this.state.detail.category : ''}</Text>
-                        </View>
-                        <View style={{ flex: 1 }}>
-                            <TouchableOpacity onPress={this.onPressFavorite}>
-                                <Icon name={this.state.isWatchlist ? 'favorite' : 'favorite-border'} type={'MaterialIcons'} style={{ color: 'white', fontSize: 32 }} />
-                            </TouchableOpacity>
-                        </View>
+                    }
+                    <View>
+                        <Text style={{ color: '#fff', margin: 10, fontSize: 17, fontWeight: '500' }}>
+                            {(this.state.files && Object.keys(this.state.files)).length > 0 ? 'Select Server:' : 'No Sources'}
+                        </Text>
                     </View>
-                    <View style={styles.separator} />
-                    <Text style={[styles.h2]}>{this.state.detail ? this.state.detail.description : ''}</Text>
-                </View>
-            </ScrollView>
-        )
+                    <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
+                        <FlatList horizontal data={Object.keys(this.state.files)} renderItem={this.renderServerItem} />
+                    </View>
+                    <View style={styles.descContainer}>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                            <View style={{ flex: 9 }}>
+                                <Text style={[styles.h1, styles.bold]}>{this.state.detail ? this.state.detail.title : ''}</Text>
+                                <Text style={[styles.h2, styles.orange]}>{this.state.detail ? this.state.detail.category : ''}</Text>
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <TouchableOpacity onPress={this.onPressFavorite}>
+                                    <Icon name={this.state.isWatchlist ? 'favorite' : 'favorite-border'} type={'MaterialIcons'} style={{ color: 'white', fontSize: 32 }} />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <View style={styles.separator} />
+                        <Text style={[styles.h2]}>{this.state.detail ? this.state.detail.description : ''}</Text>
+                    </View>
+                </ScrollView>
+                <Ads />
+            </Container>)
     }
 }
 
