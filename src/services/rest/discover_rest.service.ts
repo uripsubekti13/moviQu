@@ -18,8 +18,7 @@ export interface Movie {
 
 export class DiscoverRestService {
   public async getFirstData(): Promise<Discover> {
-    const headers = CONSTANT.REQ_HEADER;
-    const response = await fetch(`${CONSTANT.BASE_URL}/api_v4/first_data`, { headers });
+    const response = await fetch(CONSTANT.BASE_URL);
     const data = await response.json();
     const featured = data.featured.map(this.movieMapper);
     const latest = data.latest.map(this.movieMapper);

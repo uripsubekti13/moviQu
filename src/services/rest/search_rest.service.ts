@@ -12,8 +12,7 @@ export interface Movie {
 
 export class SearchRestService {
   public async search(query: string): Promise<Array<Movie>> {
-    const headers = CONSTANT.REQ_HEADER;
-    const response = await fetch(`${CONSTANT.BASE_URL}/api_v4/search/${encodeURI(query)}`, { headers });
+    const response = await fetch(`${CONSTANT.BASE_URL}/search/${encodeURI(query)}`);
     const data = await response.json();
     const result = data.map(this.movieMapper)
     return result;

@@ -32,8 +32,7 @@ export interface File {
 
 export class DetailRestService {
   public async getDetail(id: string): Promise<Detail | null> {
-    const headers = CONSTANT.REQ_HEADER;
-    const response = await fetch(`${CONSTANT.BASE_URL}/api_v4/getById/${id}`, { headers });
+    const response = await fetch(`${CONSTANT.BASE_URL}/detail/${id}`);
     const data = await response.json();
     if (!data || data.length === 0) {
       return null;
